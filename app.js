@@ -72,12 +72,7 @@ app.post("/districts/", async (request, response) => {
 app.get("/districts/:districtId/", async (request, response) => {
   const { districtId } = request.params;
   const getDistrictQuery = `
-    SELECT district_id,
-    district_name, 
-    state_id, 
-    cases,
-    active,
-    deaths
+    SELECT *
     FROM district 
     WHERE district_id = '${districtId}'`;
   const getDistrict = await db.get(getDistrictQuery);
@@ -87,10 +82,12 @@ app.get("/districts/:districtId/", async (request, response) => {
       districtName: each.district_name,
       stateId: each.state_id,
       cases: each.cases,
+      cured: each.cured,
       active: each.active,
       deaths: each.deaths,
     };
   };
+  console.log(getDistrict);
   response.send(convertSnakeToCamelCase(getDistrict));
 });
 
